@@ -253,7 +253,7 @@ Here’s an example custom schema for a note:
             "properties": {
                 "title": {
                     "title": "Title",
-                    "description": "Title for the note"
+                    "description": "Title for the note",
                     "type": "string"
                 },
                 "body": {
