@@ -27,9 +27,10 @@ You need to install [ZkPass TransGate extension](https://zkpass.gitbook.io/zkpas
 ### Issuing a ZkPass credential
 
 The [proof-connector](https://proofs.verida.network/) app can issue ZkPass credential.
-You need to provide `veridaDid` where generated credential will go to in the url. For example, the url can be like this: [Example Url](https://proof.verida.network/add-credential?veridaDid=did:vda:mainnet:0x378E209c8Cdc071b1ad7d0b4aBE300309A7bE541).
+You need to provide `veridaDid` where generated credential will go to in the url. For example, the url can be like [this](https://proof.verida.network/add-credential?veridaDid=did:vda:mainnet:0x378E209c8Cdc071b1ad7d0b4aBE300309A7bE541), or [this](https://proof.verida.network/add-credential?veridaDid=did:vda:mainnet:0x378E209c8Cdc071b1ad7d0b4aBE300309A7bE541&schemaId=ef39adb26c88439591279e25e7856b61).
+
 It will redirects you to page where you select schemas.
-Once you select schema, you can start process to create credentials.
+Once you select schema from ZkPass protocol, you can start process to create credentials.
 
 ![ZkPass credential issuer - Start generating](/img/extensions/zkpass/start-process.png)
 
@@ -69,6 +70,7 @@ async function processZK(schemaId: string): Promise<ZkPassResult> {
 ### Verifying a ZkPass credential
 
 The [proof-connector](https://proofs.verida.network/verify) can verify a zero knowledge proof generated from a ZkPass credential stored in the user's Verida Wallet. More information is available in the [ZkPass Verification documentation](https://zkpass.gitbook.io/zkpass/developer-guides/how-to-verify-the-result).
+
 
 ![ZkPass credential verifier - Select Credential](/img/extensions/zkpass/select-credential.png)
 
