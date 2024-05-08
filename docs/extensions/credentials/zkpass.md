@@ -16,7 +16,7 @@ To learn more about ZkPass, [check zkPass official doc](https://zkpass.gitbook.i
 
 ## Wallet Users
 
-Users can install the Verida Wallet to receive verifiable credentials from Issuers using the ZkPass technology. These credentials are stored in your Vault (your private and secured storage space on the Verida Network) and therefore shown in the Verida Wallet alongside other credentials.
+Users can install the Verida Wallet to receive verifiable credentials from Issuers using the Zero Knowledge technology. These credentials are stored in your Vault (your private and secured storage space on the Verida Network) and therefore shown in the Verida Wallet alongside other credentials.
 
 Verifiers can also send you ZkPass proof requests. The Verida Wallet will automatically generate the Zero-Knowledge proof (ZKP) for you and send it to the Verifier. The Zero-Knowledge proof means no data is actually shared with the Verifier, only the fact that you have a valid credential satisfying the request.
 
@@ -36,6 +36,7 @@ Once you select schema from ZkPass protocol, you can start process to create cre
 
 It will redirects you to the platform (For example: Binance) and once you click `Start` button in TransGate extension, the the process should start.
 ![ZkPass credential issuer - TransGate](/img/extensions/zkpass/transgate.png)
+
 
 ```
 export type ZkPassResult = {
