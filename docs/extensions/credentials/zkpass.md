@@ -1,45 +1,45 @@
 ---
-title: ZkPass Credential
+title: zkPass Credential
 sidebar_position: 4
-description: The Verida Wallet supports the ZkPass verifiable credentials.
-keywords: [Verida, ZkPass, Zero Knowledge, Credentials, Verifiable Credentials]
+description: The Verida Wallet supports the zkPass verifiable credentials.
+keywords: [Verida, zkPass, Zero Knowledge, Credentials, Verifiable Credentials]
 ---
 
 import AppleAppStore from '/img/app_store_apple.svg';
 import GooglePlay from '/img/play_store_google.svg';
 
-# ZkPass
+# zkPass
 
-The Verida Wallet supports ZkPass verifiable credentials. This allows users to receive and store ZkPass credentials as well as reply to proof requests in a privacy-preserving way thanks to ZkPass technology.
+The Verida Wallet supports zkPass verifiable credentials. This allows users to receive and store zkPass credentials as well as reply to proof requests in a privacy-preserving way thanks to zkPass technology.
 
-To learn more about ZkPass, [check zkPass official doc](https://zkpass.gitbook.io/zkpass/user-guides/overview) and head over to [zkPass developer documentation](https://zkpass.gitbook.io/zkpass/developer-guides/extension-js-sdk).
+To learn more about zkPass, [check zkPass official doc](https://zkpass.gitbook.io/zkpass/user-guides/overview) and head over to [zkPass developer documentation](https://zkpass.gitbook.io/zkpass/developer-guides/extension-js-sdk).
 
 ## Wallet Users
 
 Users can install the Verida Wallet to receive verifiable credentials from Issuers using the Zero Knowledge technology. These credentials are stored in your Vault (your private and secured storage space on the Verida Network) and therefore shown in the Verida Wallet alongside other credentials.
 
-Verifiers can also send you ZkPass proof requests. The Verida Wallet will automatically generate the Zero-Knowledge proof (ZKP) for you and send it to the Verifier. The Zero-Knowledge proof means no data is actually shared with the Verifier, only the fact that you have a valid credential satisfying the request.
+Verifiers can also send you zkPass proof requests. The Verida Wallet will automatically generate the Zero-Knowledge proof (ZKP) for you and send it to the Verifier. The Zero-Knowledge proof means no data is actually shared with the Verifier, only the fact that you have a valid credential satisfying the request.
 
 ## Pre-requirement
 
-You need to install [ZkPass TransGate extension](https://zkpass.gitbook.io/zkpass/user-guides/transgate) to issue zkPass credentials.
+You need to install [zkPass TransGate extension](https://zkpass.gitbook.io/zkpass/user-guides/transgate) to issue zkPass credentials.
 
-### Issuing a ZkPass credential
+### Issuing a zkPass credential
 
-The [proof-connector](https://proofs.verida.network/) app can issue ZkPass credential.
+The [proof-connector](https://proofs.verida.network/) app can issue zkPass credential.
 You need to provide `veridaDid` where generated credential will go to in the url. For example, the url can be like [this](https://proof.verida.network/add-credential?veridaDid=did:vda:mainnet:0x378E209c8Cdc071b1ad7d0b4aBE300309A7bE541), or [this](https://proof.verida.network/add-credential?veridaDid=did:vda:mainnet:0x378E209c8Cdc071b1ad7d0b4aBE300309A7bE541&schemaId=ef39adb26c88439591279e25e7856b61).
 
 It will redirects you to page where you select schemas.
-Once you select schema from ZkPass protocol, you can start process to create credentials.
+Once you select schema from zkPass protocol, you can start process to create credentials.
 
-![ZkPass credential issuer - Start generating](/img/extensions/zkpass/start-process.png)
+![zkPass credential issuer - Start generating](/img/extensions/zkpass/start-process.png)
 
 It will redirects you to the platform (For example: Binance) and once you click `Start` button in TransGate extension, the the process should start.
-![ZkPass credential issuer - TransGate](/img/extensions/zkpass/transgate.png)
+![zkPass credential issuer - TransGate](/img/extensions/zkpass/transgate.png)
 
 
 ```
-export type ZkPassResult = {
+export type zkPassResult = {
   allocatorAddress: string;
   allocatorSignature: string;
   publicFields: any[];
@@ -52,7 +52,7 @@ export type ZkPassResult = {
   zkPassSchemaLabel?: string;
 };
 
-async function processZK(schemaId: string): Promise<ZkPassResult> {
+async function processZK(schemaId: string): Promise<zkPassResult> {
   // Create the connector instance
   const connector = new TransgateConnect(ZKPASS_APP_ID);
   // Check if the TransGate extension is installed
@@ -61,24 +61,24 @@ async function processZK(schemaId: string): Promise<ZkPassResult> {
   if (isAvailable) {
     const res = await connector.launch(schemaId);
 
-    return res as ZkPassResult;
+    return res as zkPassResult;
   } else {
     throw new Error("You need to install ZKPass extension");
   }
 }
 ```
 
-### Verifying a ZkPass credential
+### Verifying a zkPass credential
 
-The [proof-connector](https://proofs.verida.network/verify) can verify a zero knowledge proof generated from a ZkPass credential stored in the user's Verida Wallet. More information is available in the [ZkPass Verification documentation](https://zkpass.gitbook.io/zkpass/developer-guides/how-to-verify-the-result).
+The [proof-connector](https://proofs.verida.network/verify) can verify a zero knowledge proof generated from a zkPass credential stored in the user's Verida Wallet. More information is available in the [zkPass Verification documentation](https://zkpass.gitbook.io/zkpass/developer-guides/how-to-verify-the-result).
 
 
-![ZkPass credential verifier - Select Credential](/img/extensions/zkpass/select-credential.png)
+![zkPass credential verifier - Select Credential](/img/extensions/zkpass/select-credential.png)
 
 ```
 import Web3 from "web3";
 import { VeridaCredentialRecord } from "@verida/verifiable-credentials";
-import { ZkPassResult } from "../@types";
+import { zkPassResult } from "../@types";
 
 const web3 = new Web3();
 export const verifyZKProof = (proof: VeridaCredentialRecord): boolean => {
@@ -94,7 +94,7 @@ export const verifyZKProof = (proof: VeridaCredentialRecord): boolean => {
       publicFieldsHash,
       validatorSignature,
       allocatorAddress
-    } = credentialData as ZkPassResult;
+    } = credentialData as zkPassResult;
 
     // verify allocator signature
     const taskIdHex = Web3.utils.stringToHex(taskId);
