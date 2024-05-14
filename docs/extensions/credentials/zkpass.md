@@ -12,13 +12,13 @@ import GooglePlay from '/img/play_store_google.svg';
 
 The Verida Wallet supports zkPass verifiable credentials. This allows users to receive and store zkPass credentials as well as reply to proof requests in a privacy-preserving way thanks to zkPass technology.
 
-To learn more about ZkPass, [check zkPass official doc](https://zkpass.gitbook.io/zkpass/user-guides/overview) and head over to [zkPass developer documentation](https://zkpass.gitbook.io/zkpass/developer-guides/extension-js-sdk).
+To learn more about zkPass, [check zkPass official doc](https://zkpass.gitbook.io/zkpass/user-guides/overview) and head over to [zkPass developer documentation](https://zkpass.gitbook.io/zkpass/developer-guides/extension-js-sdk).
 
 ## Wallet Users
 
 Users can install the Verida Wallet to receive verifiable credentials from Issuers using the Zero Knowledge technology. These credentials are stored in your Vault (your private and secured storage space on the Verida Network) and therefore shown in the Verida Wallet alongside other credentials.
 
-Verifiers can also send you ZkPass proof requests. The Verida Wallet will automatically generate the Zero-Knowledge proof (ZKP) for you and send it to the Verifier. The Zero-Knowledge proof means no data is actually shared with the Verifier, only the fact that you have a valid credential satisfying the request.
+Verifiers can also send you zkPass proof requests. The Verida Wallet will automatically generate the Zero-Knowledge proof (ZKP) for you and send it to the Verifier. The Zero-Knowledge proof means no data is actually shared with the Verifier, only the fact that you have a valid credential satisfying the request.
 
 ## Request zkPass credential
 
@@ -130,7 +130,7 @@ It will redirect you to the platform (For example: Binance) and once you click `
 
 The [proof-connector](https://prove.verida.network/verify) can verify a zero knowledge proof generated from a zkPass credential stored in the user's Verida Wallet. More information is available in the [zkPass Verification documentation](https://zkpass.gitbook.io/zkpass/developer-guides/how-to-verify-the-result).
 
-![ZkPass credential verifier - Select Credential](/img/extensions/zkpass/select-credential.png)
+![zkPass credential verifier - Select Credential](/img/extensions/zkpass/select-credential.png)
 
 ### Example code
 
