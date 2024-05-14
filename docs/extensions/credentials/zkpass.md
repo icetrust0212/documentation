@@ -1,16 +1,16 @@
 ---
-title: ZkPass Credential
+title: zkPass Credential
 sidebar_position: 4
-description: The Verida Wallet supports the ZkPass verifiable credentials.
-keywords: [Verida, ZkPass, Zero Knowledge, Credentials, Verifiable Credentials]
+description: The Verida Wallet supports the zkPass verifiable credentials.
+keywords: [Verida, zkPass, Zero Knowledge, Credentials, Verifiable Credentials]
 ---
 
 import AppleAppStore from '/img/app_store_apple.svg';
 import GooglePlay from '/img/play_store_google.svg';
 
-# ZkPass
+# zkPass credentials
 
-The Verida Wallet supports ZkPass verifiable credentials. This allows users to receive and store ZkPass credentials as well as reply to proof requests in a privacy-preserving way thanks to ZkPass technology.
+The Verida Wallet supports zkPass verifiable credentials. This allows users to receive and store zkPass credentials as well as reply to proof requests in a privacy-preserving way thanks to zkPass technology.
 
 To learn more about ZkPass, [check zkPass official doc](https://zkpass.gitbook.io/zkpass/user-guides/overview) and head over to [zkPass developer documentation](https://zkpass.gitbook.io/zkpass/developer-guides/extension-js-sdk).
 
@@ -20,65 +20,123 @@ Users can install the Verida Wallet to receive verifiable credentials from Issue
 
 Verifiers can also send you ZkPass proof requests. The Verida Wallet will automatically generate the Zero-Knowledge proof (ZKP) for you and send it to the Verifier. The Zero-Knowledge proof means no data is actually shared with the Verifier, only the fact that you have a valid credential satisfying the request.
 
-## Pre-requirement
+## Request zkPass credential
 
-You need to install [ZkPass TransGate extension](https://zkpass.gitbook.io/zkpass/user-guides/transgate) to issue zkPass credentials.
+You can request credential which is generated from zkPass protocol for your purpose.
 
-### Issuing a ZkPass credential
-
-The [proof-connector](https://proofs.verida.network/) app can issue ZkPass credential.
-You need to provide `veridaDid` where generated credential will go to in the url. For example, the url can be like [this](https://proof.verida.network/add-credential?veridaDid=did:vda:mainnet:0x378E209c8Cdc071b1ad7d0b4aBE300309A7bE541), or [this](https://proof.verida.network/add-credential?veridaDid=did:vda:mainnet:0x378E209c8Cdc071b1ad7d0b4aBE300309A7bE541&schemaId=ef39adb26c88439591279e25e7856b61).
-
-It will redirects you to page where you select schemas.
-Once you select schema from ZkPass protocol, you can start process to create credentials.
-
-![ZkPass credential issuer - Start generating](/img/extensions/zkpass/start-process.png)
-
-It will redirects you to the platform (For example: Binance) and once you click `Start` button in TransGate extension, the the process should start.
-![ZkPass credential issuer - TransGate](/img/extensions/zkpass/transgate.png)
-
+### Example code
 
 ```
-export type ZkPassResult = {
-  allocatorAddress: string;
-  allocatorSignature: string;
-  publicFields: any[];
-  publicFieldsHash: string;
-  taskId: string;
-  uHash: string;
-  validatorAddress: string;
-  validatorSignature: string;
-  zkPassSchemaId?: string;
-  zkPassSchemaLabel?: string;
-};
+  const did = "..."; // Verida Did
+  // Get message object from verida context
+  const messaging = await context.getMessaging();
 
-async function processZK(schemaId: string): Promise<ZkPassResult> {
-  // Create the connector instance
-  const connector = new TransgateConnect(ZKPASS_APP_ID);
-  // Check if the TransGate extension is installed
-  // If it returns false, please prompt to install it from chrome web store
-  const isAvailable = await connector.isTransgateAvailable();
-  if (isAvailable) {
-    const res = await connector.launch(schemaId);
+  // setup a callback to show the response
+  await messaging.onMessage((data) => {
+    // This callback should be called once user shares credential
+    console.log('Received credentials: ', data);
+  });
 
-    return res as ZkPassResult;
-  } else {
-    throw new Error("You need to install ZKPass extension");
-  }
+  const messageType = "inbox/type/dataRequest";
+  const config = {
+    did,
+    recipientContextName: "Verida: Vault",
+  };
+  const dataToSend = {
+    requestSchema: "https://common.schemas.verida.io/credential/base/v0.2.0/schema.json",
+    filter: {
+      $or: [
+        { credentialSchema: "https://common.schemas.verida.io/credential/zkpass/v0.1.0/schema.json" }
+      ]
+    },
+    userSelect: true,
+  };
+
+  // This is the DID the message will go to
+  const requestFromDID = did;
+  const messageSubject = "Please select your verifiable credential to verify",
+
+  const res = await messaging.send(
+    requestFromDID,
+    messageType,
+    dataToSend,
+    msg.messageSubject,
+    config
+  );
+
+  console.log("Request sent");
+```
+
+![Request zkPass credential from Verida Wallet](/img/extensions/zkpass/request-credential-process.png)
+
+## Issuing a zkPass credential
+
+You need to install [zkPass TransGate extension](https://zkpass.gitbook.io/zkpass/user-guides/transgate) to issue zkPass credentials.
+
+If you don't have credentials in your Verida Wallet, you can issue zkPass credential through the [proof-connector](https://prove.verida.network/).
+You need to provide `veridaDid` where generated credential will go to in the url. For example, the url can be like this:
+
+```
+ https://prove.verida.network/add-credential?veridaDid=[veridaDid]
+ https://prove.verida.network/add-credential?veridaDid=[veridaDid]&schemaId=[zkPass schemaId]
+```
+
+### Available zkPass schemas
+
+```
+Verify ownership of Uber account: ef39adb26c88439591279e25e7856b61
+Verify ownership of Discord account: c0519cf1b26c403096a6af51f41e3f8d
+Verify ownership of Binance account: 556ed720e40c4fb48ea7545708e47c90
+Verify ownership of Bybit account: afc3447c5b0f48588db5640472691d37
+Verify ownership of KuCoin account: 01c1439e852f47aaa4f697cef14d3e94
+Verify ownership of MEXC account: d73e2c2227f642dcbade873ff2b09173
+Verify ownership of Gate account: a3b6bf7a231e45a582ffd0e50245c849
+
+```
+
+It redirects you to page where you select schemas.
+Once you select schema from ZkPass protocol, you can start process to create credentials.
+
+### Example code
+
+```
+import TransgateConnect from "@zkpass/transgate-js-sdk";
+
+// You can create your own app in zkPass dashboard.
+const ZKPASS_APP_ID = "bced693b-bedc-464c-8250-566743ff5855";
+// The schema Id for Uber account ownership verification
+const schemaId = "ef39adb26c88439591279e25e7856b61";
+
+// Create the connector instance
+const connector = new TransgateConnect(ZKPASS_APP_ID);
+// Check if the TransGate extension is installed
+// If it returns false, please prompt to install it from chrome web store
+const isAvailable = await connector.isTransgateAvailable();
+if (isAvailable) {
+  const res = await connector.launch(schemaId);
+
+  return res;
+} else {
+  throw new Error("You need to install zkPass extension");
 }
 ```
 
-### Verifying a ZkPass credential
+![zkPass credential issuer - Start generating](/img/extensions/zkpass/start-process.png)
 
-The [proof-connector](https://proofs.verida.network/verify) can verify a zero knowledge proof generated from a ZkPass credential stored in the user's Verida Wallet. More information is available in the [ZkPass Verification documentation](https://zkpass.gitbook.io/zkpass/developer-guides/how-to-verify-the-result).
+It will redirect you to the platform (For example: Binance) and once you click `Start` button in TransGate extension, the the process should start.
+![zkPass credential issuer - TransGate](/img/extensions/zkpass/transgate.png)
 
+## Verifying a zkPass credential
+
+The [proof-connector](https://prove.verida.network/verify) can verify a zero knowledge proof generated from a zkPass credential stored in the user's Verida Wallet. More information is available in the [zkPass Verification documentation](https://zkpass.gitbook.io/zkpass/developer-guides/how-to-verify-the-result).
 
 ![ZkPass credential verifier - Select Credential](/img/extensions/zkpass/select-credential.png)
+
+### Example code
 
 ```
 import Web3 from "web3";
 import { VeridaCredentialRecord } from "@verida/verifiable-credentials";
-import { ZkPassResult } from "../@types";
 
 const web3 = new Web3();
 export const verifyZKProof = (proof: VeridaCredentialRecord): boolean => {
@@ -94,7 +152,7 @@ export const verifyZKProof = (proof: VeridaCredentialRecord): boolean => {
       publicFieldsHash,
       validatorSignature,
       allocatorAddress
-    } = credentialData as ZkPassResult;
+    } = credentialData;
 
     // verify allocator signature
     const taskIdHex = Web3.utils.stringToHex(taskId);
