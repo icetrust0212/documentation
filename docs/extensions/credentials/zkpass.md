@@ -95,7 +95,7 @@ Verify ownership of Gate account: a3b6bf7a231e45a582ffd0e50245c849
 ```
 
 It redirects you to page where you select schemas.
-Once you select schema from ZkPass protocol, you can start process to create credentials.
+Once you select schema from zkPass protocol, you can start process to create credentials.
 
 ### Example code
 
